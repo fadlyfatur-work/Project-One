@@ -1,0 +1,30 @@
+#Base Path
+/api/v1
+
+#Response Sukses
+{
+    "data" : {}
+}
+
+#Response Error
+{
+    "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Email tidak valid",
+        "details": [
+           { "field": "email", "issue": "Invalid email format" }
+        ]
+    }
+}
+
+#Pagination
+{
+  "data": [ ],
+  "meta": {
+    "page": 1,
+    "pageSize": 10,
+    "total": 123,
+    "totalPages": 13
+  }
+}
+
