@@ -7,7 +7,7 @@ function sha256(s:string) {
     return crypto.createHash("sha256").update(s).digest("hex");
 }
 
-export async function register(email:string, username:string, password:string) {
+export async function register(email:string, username:string | null, password:string) {
     //Normalizes
     const normalizeEmail = email.trim().toLowerCase();
     const normalizeUsername = username.trim().toLowerCase();
