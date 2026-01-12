@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET!;
 
 export function signInAccessToken(payload:{sub:string; role:string}) {
-    return jwt.sign(payload, JWT_SECRET, {expiresIn: "15m"});
+    return jwt.sign(payload, JWT_SECRET, {expiresIn: "15m"}); //15 menit expired
 }
 
 export function verifyAccessToken(token:string) {

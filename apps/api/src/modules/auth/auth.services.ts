@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { prisma } from "../../prisma.ts";
+import { prisma } from "../../prisma.js";
 import { signInAccessToken } from "../../utils/jwt.js";
 
 function sha256(s:string) {
@@ -90,15 +90,29 @@ export async function login(identifier:string, password:string) {
         sub: user.id, 
         role: user.role.key
     });
+
     //2. membuat refresh token
     const refreshToken = crypto.randomBytes(48).toString("hex");
     const tokenHash = sha256(refreshToken);
+
     //3. set expirenya
     const expiresAt = new Date(Date.now()+1000*60*60*24*14); //14 hari
+
     //4. simpan refresh token ke DB
-    await prisma.refreshToken.create({
-        data: { userId: user.id, tokenHash, expiresAt },
+    await prisma.refreshToken.upsert({
+        where:{
+            userId: user.id
+        },
+        update:{},
+        create:{
+            userId: user.id, 
+            tokenHash, expiresAt
+        }
     });
+
+    // await prisma.refreshToken.create({
+    //     data: { userId: user.id, tokenHash, expiresAt },
+    // });
 
     return {
         ok:true,
@@ -164,6 +178,7 @@ export async function refresh(RefreshToken:string) {
 
 export async function logout(refreshToken:string) {
     const tokenHash = sha256(refreshToken);
+    console.log(tokenHash);
     await prisma.refreshToken.updateMany({
         where:{ tokenHash, revokedAt:null },
         data:{revokedAt: new Date() },
