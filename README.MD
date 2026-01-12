@@ -14,3 +14,7 @@ docker compose up -d
 -- docker logs -f baseweb_postgres (optional cek logs)
 -- docker exec -it baseweb_postgres psql -U postgres -d baseweb (optional cek db)
 
+
+1. Jalankan Prisma
+*jika sudah ada perubahan
+npx prisma migrate dev --name [nama]

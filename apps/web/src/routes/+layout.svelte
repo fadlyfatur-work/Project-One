@@ -24,5 +24,3 @@
   </main>
 </div>
 
-
-{@render children()}
