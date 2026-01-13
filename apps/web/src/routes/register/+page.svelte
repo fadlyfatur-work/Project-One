@@ -100,6 +100,6 @@ redirect ke /dashboard -->
         >
     </div>
 
-    <button type="submit">Sign Up</button>
     <p style="color:red">{error}</p>
+    <button type="submit">Sign Up</button>
 </form>

@@ -2,11 +2,14 @@ let accessToken: string | null = null;
 
 export function setAccessToken(t:string | null) {
     accessToken = t;
+    console.log("ac: ",accessToken);
 }
 
 export async function apiFetch(path:string, option: requestInit = {}) {
     const headers = new Headers(options.headers);
 
+    console.log("access Token:", accessToken);
+    
     if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);
         headers.set("Content-Type", "application/json");
@@ -17,6 +20,9 @@ export async function apiFetch(path:string, option: requestInit = {}) {
         headers,
         credentials: "include",
     });
+
+    console.log(res.status);
+    
 
     if(res.status === 401){
         const r = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`,{

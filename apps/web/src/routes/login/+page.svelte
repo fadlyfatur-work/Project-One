@@ -10,6 +10,7 @@ redirect ke /dashboard -->
 	import { setAccessToken } from "$lib/api";
 	import { auth } from "$lib/stores/auth";
 
+
     let email="";
     let password="";
     let error="";
@@ -21,6 +22,7 @@ redirect ke /dashboard -->
         error = '';
         auth.update( v => ({
             ...v,
+            isAuthenticated: false,
             loading: true
         }));
 
@@ -31,24 +33,29 @@ redirect ke /dashboard -->
             },
             credentials:'include',
             body: JSON.stringify({email, password})
-        })
-
+        });
+        
         const data = await res.json();
+        
+        console.log("data from BE:", data);
+        console.log("data ac from BE:", data.accessToken);
+        console.log("data user from BE:", data.user);
+        
 
         if(!res.ok){
             error = data?.error?.message ?? 'Login Gagal!';
             auth.update(v => ({
-                ...v, loading:false
+                ...v, isAuthenticated:false, loading:false
             }));
             return;
         }
 
         //simpan access token
-        setAccessToken(data.setAccessToken);
-
+        setAccessToken(data.accessToken);
+        
         //update auth store
         auth.set({
-            user:data.user,
+            user: data.user,
             isAuthenticated: true,
             loading: false
         })
@@ -82,5 +89,6 @@ redirect ke /dashboard -->
         >
     </div>
 
+    <p style="color:red">{error}</p>
     <button type="submit">Login</button>
 </form>
