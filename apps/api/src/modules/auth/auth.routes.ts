@@ -10,6 +10,6 @@ route.post("/refresh", refreshHandler);
 route.post("/logout", logoutHandler);
 
 //-------------------------------------------
-route.get("/my-profile", requireAuth, meHandler);
+route.get("/check-me", requireAuth, meHandler);
 
 export default route;

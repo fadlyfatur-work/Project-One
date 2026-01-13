@@ -50,6 +50,7 @@ export async function registerHandler(req:any, res:any) {
 }
 
 export async function loginHandler(req:any, res:any) {
+    console.log("LOGIN HANDLER START!");
     console.log(req.body);
     
     const parsed = loginSchema.safeParse(req.body);
@@ -83,14 +84,15 @@ export async function loginHandler(req:any, res:any) {
     });
 
     return res.json({
-        data:{
-            accessToken: result.accessToken, user: result.user
-        }
+        accessToken: result.accessToken, 
+        user: result.user
     });
 }
 
 export async function refreshHandler(req:any, res:any) {
     const rt = req.cookie?.rt;
+    console.log("cookie: ", rt);
+    
     if(!rt) return res.status(401).json({
         error:{
             code: "NO_REFRESH",
@@ -105,7 +107,8 @@ export async function refreshHandler(req:any, res:any) {
             message: "Refersh token tidak valid!"
         }
     });
-
+    console.log("res: ", result.user);
+    
     return res.json({
         data:{
             accessToken: result.accessToken, 
@@ -147,7 +150,8 @@ export async function meHandler(req:any, res:any) {
         where: { id: req.user.id },
         select: { id:true, email:true, role:true },
     });
-
+    console.log("user: ", user);
+    
     return res.json({
         data:{user}
     });

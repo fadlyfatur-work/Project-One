@@ -28,3 +28,32 @@
   }
 }
 
+// ALUR TOKEN
+
+BE:AUTH --- token dibuat dan diverifikasi
+  -> route
+    --> penyedia endpoint
+  -> controller
+    --> orkestrasi req dan res
+    --> panggil service
+    --> set cookies
+    --> return access TOKEN
+  -> service
+    --> cek password
+    --> JWT dibuat
+    --> validasi refresh token
+    --> logout 
+
+FE:AUTH 
+  -> authStore
+    --> simpan access token 
+    --> simpan status login -- isAuthenticated
+  -> http
+    --> wrapper fetch/axios
+    --> header auth
+    --> catch 401
+    --> panggil refresh
+    --> retry request
+  -> auth
+    --> memanggil endpoint BE
+  
