@@ -1,11 +1,14 @@
+import { PUBLIC_API_URL } from '$env/static/public';
+
 let accessToken: string | null = null;
 
 export function setAccessToken(t:string | null) {
-    accessToken = t;
+    console.log("START Access Token");
     console.log("ac: ",accessToken);
+    accessToken = t;
 }
 
-export async function apiFetch(path:string, option: requestInit = {}) {
+export async function apiFetch(path:string, options:RequestInit = {}) {
     const headers = new Headers(options.headers);
 
     console.log("access Token:", accessToken);
@@ -15,8 +18,8 @@ export async function apiFetch(path:string, option: requestInit = {}) {
         headers.set("Content-Type", "application/json");
     }
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL}${path}`,{
-        ...option,
+    const res = await fetch(`${PUBLIC_API_URL}${path}`,{
+        ...options,
         headers,
         credentials: "include",
     });
@@ -25,7 +28,7 @@ export async function apiFetch(path:string, option: requestInit = {}) {
     
 
     if(res.status === 401){
-        const r = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`,{
+        const r = await fetch(`${PUBLIC_API_URL}/auth/refresh`,{
             method:"POST",
             credentials:"include",
         });
@@ -38,8 +41,8 @@ export async function apiFetch(path:string, option: requestInit = {}) {
             retryHeaders.set("Content-Type", "application/json");
             retryHeaders.set("Authorization", `Bearer ${json.data.accessToken}`);
             
-            return fetch(`${import.meta.env.VITE_API_URL}${path}`,{
-                ...option,
+            return fetch(`${PUBLIC_API_URL}${path}`,{
+                ...options,
                 headers: retryHeaders,
                 credentials: "include",
             });

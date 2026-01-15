@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { apiFetch, setAccessToken } from "$lib/api";
 import { PUBLIC_API_URL } from '$env/static/public';
+import { get } from 'svelte/store';
 
 export const auth = writable<{ user: any | null; isAuthenticated: boolean; loading: boolean }>({ user: null, isAuthenticated:false, loading: true });
 
@@ -14,8 +15,7 @@ export async function initAuth(fetchFn: typeof fetch) {
     credentials: "include",
   });
 
-  console.log("refresh:", r.ok);
-
+  console.log("AUTH 'refresh' TOKEN :", r.ok);
 
   if (r.ok) {
     console.log('refresh ok!');
@@ -29,10 +29,14 @@ export async function initAuth(fetchFn: typeof fetch) {
     if (me.ok) {
       const meJson = await me.json();
       auth.set({ user: meJson.data.user, isAuthenticated: true, loading: false });
+      const state = get(auth);
+      console.log(state);
+
       return;
     }
   }
 
   setAccessToken(null);
   auth.set({ user: null, isAuthenticated: false, loading: false });
+  console.log('END AUTH');
 }

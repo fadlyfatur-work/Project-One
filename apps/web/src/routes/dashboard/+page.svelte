@@ -1,6 +1,5 @@
 <script lang="ts">
     import { auth } from '$lib/stores/auth';
-    console.log(auth.user);
 </script>
 
 <h1>Dashboard</h1>

@@ -90,8 +90,8 @@ export async function loginHandler(req:any, res:any) {
 }
 
 export async function refreshHandler(req:any, res:any) {
-    const rt = req.cookie?.rt;
-    console.log("cookie: ", rt);
+    const rt = req.cookies?.rt;
+    console.log("refresh cookie: ", req.cookies);
     
     if(!rt) return res.status(401).json({
         error:{
